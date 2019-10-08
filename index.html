@@ -15,68 +15,57 @@
 <body>
     <div class="container">
         <div class="jumbotron">
-            <h1 class="display-4">Train Tracker!</h1>
-            <p class="lead">Lost your train of thought? Use this to find it!</p>
+            <h1 class="display-4 text-center">Train Tracker!</h1>
+            <p class="lead text-center">Lost your train of thought? Use this to find it!</p>
         </div>
     </div>
     <br>
     <div class="container">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Train Name</th>
-                    <th scope="col">Destination</th>
-                    <th scope="col">Freq. (min.)</th>
-                    <th scope="col">Next Arrival</th>
-                    <th scope="col">Min Away</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    <td>@twitter</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="card mb-4">
+            <div class="card-header">Current Train Schedule</div>
+            <div class="card-body">
+                <table class="table table-striped table-hover" id="train-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Train Name</th>
+                            <th scope="col">Destination</th>
+                            <th scope="col">Freq. (min.)</th>
+                            <th scope="col">Next Arrival</th>
+                            <th scope="col">Min Away</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <br>
     <div class="container">
-        <form>
-            <div class="form-group">
-                <label for="train-name">Train Name</label>
-                <input type="text" class="form-control" id="train-name" placeholder="Thomas Express">
+        <div class="card mb-4">
+            <div class="card-header">Add a Train Schedule</div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="train-name">Train Name</label>
+                        <input type="text" class="form-control" id="train-name" placeholder="Thomas Express">
+                    </div>
+                    <div class="form-group">
+                        <label for="destination">Destination</label>
+                        <input type="text" class="form-control" id="destination" placeholder="Utopia">
+                    </div>
+                    <div class="form-group">
+                        <label for="first-train-time">First Train Time (HH:mm - military format)</label>
+                        <input type="text" class="form-control" id="first-train-time" placeholder="18:30">
+                    </div>
+                    <div class="form-group">
+                        <label for="freq">Freq. (min.)</label>
+                        <input type="text" class="form-control" id="freq" placeholder="30">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="user-submit">Submit</button>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="destination">Destination</label>
-                <input type="text" class="form-control" id="destination" placeholder="Utopia">
-            </div>
-            <div class="form-group">
-                <label for="first-train-time">First Train Time (HH:mm - military format)</label>
-                <input type="text" class="form-control" id="first-train-time" placeholder="18:30">
-            </div>
-            <div class="form-group">
-                <label for="freq">Freq. (min.)</label>
-                <input type="text" class="form-control" id="freq" placeholder="30">
-            </div>
-            <button type="submit" class="btn btn-primary" id="user-submit">Submit</button>
-        </form>
+        </div>
         <br>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

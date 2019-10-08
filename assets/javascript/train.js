@@ -1,26 +1,84 @@
 var config = {
-    apiKey: "AIzaSyA80R6FtX0jub45y6Do_EmN8V79l3b3tQ4",
-    authDomain: "varun-bootcamp.firebaseapp.com",
-    databaseURL: "https://varun-bootcamp.firebaseio.com",
-    projectId: "varun-bootcamp",
-    storageBucket: ""
+    apiKey: "AIzaSyC0tYE-jY5stVDzIJFU5DJqjPYj2cejeqs",
+    authDomain: "train-tracker-15cc1.firebaseapp.com",
+    databaseURL: "https://train-tracker-15cc1.firebaseio.com",
+    projectId: "train-tracker-15cc1"
 };
 
 firebase.initializeApp(config);
 var database = firebase.database();
 
 //put the code for getting the values from the user form and put the name, dest, freq, away, next arrival, etc. here and dump it to fire
-database.ref().set({
-    trainName: "Never on Time Transit"
-  });
+// database.ref().set({
+//     trainName: "Never on Time Transit"
+//   });
 
-database.ref().on("value", function (snapshot) {
+var trains = database.ref("/trains");
+
+database.ref("/trains").on("value", function (snapshot) { //this function is called whenever there is a CHANGE in the VALUE. theoretically, it can be called a million times at a given moment
+
     console.log(snapshot.val());
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
 });
 
-trainName = $("#train-name").val().trim();
-dest = $("#destination").val().trim();
-firstTrainTime = $("#first-train-time").val().trim();
-freq = $("#freq").val().trim();
+database.ref("/trains").on("child_added", function (childSnapshot) {
+    var trainName = childSnapshot.val().name;
+    var destination = childSnapshot.val().dest;
+    var firstTrainTime = childSnapshot.val().firstTrainTime;
+    var freq = childSnapshot.val().freq;
+
+    //use moment.js here
+    var tFrequency = freq;
+    var firstTime = firstTrainTime;
+    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+
+    var currentTime = moment();
+
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+
+    // Time apart (remainder)
+    var tRemainder = diffTime % tFrequency;
+
+    // Minute Until Train
+    var tMinutesTillTrain = tFrequency - tRemainder;
+
+    // Next Train
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+
+    var newRow = $("<tr>").append(
+        $("<td>").text(trainName),
+        $("<td>").text(destination),
+        $("<td>").text(freq),
+        // $("<td>").text(firstTrainTime)
+        $("<td>").text(moment(nextTrain).format("hh:mm")),
+        $("<td>").text(tMinutesTillTrain)
+    );
+    $("#train-table > tbody").append(newRow);
+});
+
+//submit click comes here 
+$("#user-submit").on("click", function (e) {
+    e.preventDefault();
+
+    trainName = $("#train-name").val().trim();
+    dest = $("#destination").val().trim();
+    firstTrainTime = $("#first-train-time").val().trim();
+    freq = $("#freq").val().trim();
+
+    var trainObj = {
+        name: trainName,
+        dest: dest,
+        firstTrainTime: firstTrainTime,
+        freq: freq
+    };
+
+    trains.push(trainObj);
+
+    $("#train-name").val("");
+    $("#destination").val("");
+    $("#first-train-time").val("");
+    $("#freq").val("");
+
+});
