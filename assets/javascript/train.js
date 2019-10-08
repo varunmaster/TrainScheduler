@@ -9,9 +9,7 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 //put the code for getting the values from the user form and put the name, dest, freq, away, next arrival, etc. here and dump it to fire
-// database.ref().set({
-//     trainName: "Never on Time Transit"
-//   });
+
 
 var trains = database.ref("/trains");
 
@@ -51,8 +49,7 @@ database.ref("/trains").on("child_added", function (childSnapshot) {
         $("<td>").text(trainName),
         $("<td>").text(destination),
         $("<td>").text(freq),
-        // $("<td>").text(firstTrainTime)
-        $("<td>").text(moment(nextTrain).format("hh:mm")),
+        $("<td>").text(moment(nextTrain).format("hh:mm A")),
         $("<td>").text(tMinutesTillTrain)
     );
     $("#train-table > tbody").append(newRow);
