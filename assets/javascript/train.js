@@ -29,12 +29,14 @@ database.ref("/trains").on("child_added", function (childSnapshot) {
     //use moment.js here
     var tFrequency = freq;
     var firstTime = firstTrainTime;
-    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+    var firstTimeConverted = moment(firstTime, "HH:mm");
+    console.log("first time conv: ", moment(firstTime, "HH:mm").subtract(1, "years"))
 
     var currentTime = moment();
 
     // Difference between the times
-    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    var diffTime = moment().diff(firstTimeConverted, "minutes");
+    console.log("diffTime")
 
     // Time apart (remainder)
     var tRemainder = diffTime % tFrequency;
