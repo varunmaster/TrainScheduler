@@ -26,35 +26,48 @@ database.ref("/trains").on("child_added", function (childSnapshot) {
     var firstTrainTime = childSnapshot.val().firstTrainTime;
     var freq = childSnapshot.val().freq;
 
-    //use moment.js here
-    var tFrequency = freq;
-    var firstTime = firstTrainTime;
-    var firstTimeConverted = moment(firstTime, "HH:mm");
-    console.log("first time conv: ", moment(firstTime, "HH:mm").subtract(1, "years"))
+    if (moment().isBefore(firstTrainTime)) {
+        var newRow = $("<tr>").append(
+            $("<td>").text(trainName),
+            $("<td>").text(destination),
+            $("<td>").text(freq),
+            $("<td>").text(moment(firstTrainTime).format("hh:mm A")), //if first arrival is in future, then set the next arrival time to that time
+            $("<td>").text("hello")
+        );
+        $("#train-table > tbody").append(newRow);
+    } //if same time
+    else {
+        //use moment.js here
+        var tFrequency = freq;
+        var firstTime = firstTrainTime;
+        var firstTimeConverted = moment(firstTime, "HH:mm");
+        console.log("first time conv: ", moment(firstTime, "HH:mm"))
 
-    var currentTime = moment();
+        var currentTime = moment();
 
-    // Difference between the times
-    var diffTime = moment().diff(firstTimeConverted, "minutes");
-    console.log("diffTime")
+        // Difference between the times
+        var diffTime = moment().diff(firstTimeConverted, "minutes");
+        console.log("diffTime")
 
-    // Time apart (remainder)
-    var tRemainder = diffTime % tFrequency;
+        // Time apart (remainder)
+        var tRemainder = diffTime % tFrequency;
 
-    // Minute Until Train
-    var tMinutesTillTrain = tFrequency - tRemainder;
+        // Minute Until Train
+        var tMinutesTillTrain = tFrequency - tRemainder;
 
-    // Next Train
-    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+        // Next Train
+        var nextTrain = moment().add(tMinutesTillTrain, "minutes");
 
-    var newRow = $("<tr>").append(
-        $("<td>").text(trainName),
-        $("<td>").text(destination),
-        $("<td>").text(freq),
-        $("<td>").text(moment(nextTrain).format("hh:mm A")),
-        $("<td>").text(tMinutesTillTrain)
-    );
-    $("#train-table > tbody").append(newRow);
+        var newRow = $("<tr>").append(
+            $("<td>").text(trainName),
+            $("<td>").text(destination),
+            $("<td>").text(freq),
+            $("<td>").text(moment(nextTrain).format("hh:mm A")),
+            $("<td>").text(tMinutesTillTrain)
+        );
+        $("#train-table > tbody").append(newRow);
+    }
+
 });
 
 //submit click comes here 
