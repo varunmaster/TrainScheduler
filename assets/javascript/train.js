@@ -1,5 +1,3 @@
-// var moment = require('moment');
-
 var config = {
     apiKey: "AIzaSyA80R6FtX0jub45y6Do_EmN8V79l3b3tQ4",
     authDomain: "varun-bootcamp.firebaseapp.com",
@@ -21,3 +19,8 @@ database.ref().on("value", function (snapshot) {
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
 });
+
+trainName = $("#train-name").val().trim();
+dest = $("#destination").val().trim();
+firstTrainTime = $("#first-train-time").val().trim();
+freq = $("#freq").val().trim();
