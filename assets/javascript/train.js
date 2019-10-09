@@ -15,7 +15,7 @@ var trains = database.ref("/trains");
 
 database.ref("/trains").on("value", function (snapshot) { //this function is called whenever there is a CHANGE in the VALUE. theoretically, it can be called a million times at a given moment
 
-    console.log(snapshot.val());
+    // console.log(snapshot.val());
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
 });
@@ -25,29 +25,34 @@ database.ref("/trains").on("child_added", function (childSnapshot) {
     var destination = childSnapshot.val().dest;
     var firstTrainTime = childSnapshot.val().firstTrainTime;
     var freq = childSnapshot.val().freq;
+    var firstTrainTimeConverted = moment(firstTrainTime,"LT");
+    
+    // console.log("user time: ", firstTrainTimeConverted);
+    // console.log("converted formatted: ", firstTrainTimeConverted.format("HH:mm A"));
 
     if (moment().isBefore(firstTrainTime)) {
-        var newRow = $("<tr>").append(
-            $("<td>").text(trainName),
-            $("<td>").text(destination),
-            $("<td>").text(freq),
-            $("<td>").text(moment(firstTrainTime).format("hh:mm A")), //if first arrival is in future, then set the next arrival time to that time
-            $("<td>").text("hello")
-        );
-        $("#train-table > tbody").append(newRow);
+        console.log("WE ARE HERE");
+        // var newRow = $("<tr>").append(
+        //     $("<td>").text(trainName),
+        //     $("<td>").text(destination),
+        //     $("<td>").text(freq),
+        //     $("<td>").text(firstTrainTimeConverted.format("HH:mm A")), //if first arrival is in future, then set the next arrival time to that time
+        //     $("<td>").text(moment().diff(firstTrainTime, "minutes"))
+        // );
+        // $("#train-table > tbody").append(newRow);
     } //if same time
     else {
         //use moment.js here
         var tFrequency = freq;
         var firstTime = firstTrainTime;
         var firstTimeConverted = moment(firstTime, "HH:mm");
-        console.log("first time conv: ", moment(firstTime, "HH:mm"))
+        // console.log("first time conv: ", moment(firstTime, "HH:mm"))
 
         var currentTime = moment();
 
         // Difference between the times
         var diffTime = moment().diff(firstTimeConverted, "minutes");
-        console.log("diffTime")
+        // console.log("diffTime")
 
         // Time apart (remainder)
         var tRemainder = diffTime % tFrequency;
