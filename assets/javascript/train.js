@@ -4,18 +4,12 @@ var config = {
     databaseURL: "https://train-tracker-15cc1.firebaseio.com",
     projectId: "train-tracker-15cc1"
 };
-
 firebase.initializeApp(config);
 var database = firebase.database();
-
-//put the code for getting the values from the user form and put the name, dest, freq, away, next arrival, etc. here and dump it to fire
-
-
 var trains = database.ref("/trains");
 
 database.ref("/trains").on("value", function (snapshot) { //this function is called whenever there is a CHANGE in the VALUE. theoretically, it can be called a million times at a given moment
-
-    // console.log(snapshot.val());
+    console.log(snapshot)
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
 });
@@ -26,9 +20,6 @@ database.ref("/trains").on("child_added", function (childSnapshot) {
     var firstTrainTime = childSnapshot.val().firstTrainTime;
     var freq = childSnapshot.val().freq;
     var firstTrainTimeConverted = moment(firstTrainTime,"LT");
-    
-    // console.log("user time: ", firstTrainTimeConverted);
-    // console.log("converted formatted: ", firstTrainTimeConverted.format("HH:mm A"));
 
     if (firstTrainTimeConverted.diff(moment(),"minutes") > 0) { //if train is scheduled to come in the future
         // console.log("WE ARE HERE");
