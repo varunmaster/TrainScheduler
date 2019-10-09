@@ -31,13 +31,13 @@ database.ref("/trains").on("child_added", function (childSnapshot) {
             $("<td>").text(firstTrainTimeConverted.diff(moment(),"minutes"))
         );
         $("#train-table > tbody").append(newRow);
-    } //if same time
+    } 
     else {
         var tFrequency = freq;
         var firstTime = firstTrainTime;
     
         // First Time (pushed back 1 year to make sure it comes before current time)
-        var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+        var firstTimeConverted = moment(firstTime, "hh:mm");
         // console.log(firstTimeConverted);
     
         // Current Time
@@ -86,12 +86,10 @@ $("#user-submit").on("click", function (e) {
         firstTrainTime: firstTrainTime,
         freq: freq
     };
-
     trains.push(trainObj);
 
     $("#train-name").val("");
     $("#destination").val("");
     $("#first-train-time").val("");
     $("#freq").val("");
-
 });
